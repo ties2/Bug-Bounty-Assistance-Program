@@ -1,1 +1,2 @@
-[Red team notes](https://github.com/ties2/My-sec-notes/edit/main/README.md)
+Red team notes:
+* Module 1: Introduction
