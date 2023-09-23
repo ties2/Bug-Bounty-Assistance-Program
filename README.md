@@ -1,2 +1,3 @@
 The Bug Bounty Assistance Program (BBAP) aims to empower security hunters by providing them with the knowledge, resources, and support they need to excel in the field of ethical hacking. By offering educational materials, mentorship, tools, and a collaborative community, the BBAP seeks to lower barriers to entry and foster the growth of a vibrant bug bounty community. Through its efforts, the BBAP ultimately contributes to the collective goal of making digital systems more secure, protecting both organizations and individuals from cyber threats. In an era where cybersecurity is paramount, initiatives like the BBAP are crucial in building a safer digital world.
 
+![Uploading BB assist.png…]()
