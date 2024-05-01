@@ -1,1 +1,42 @@
-Machine Learning Components
+Vulnerability Prediction Model
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# Load the dataset
+data = pd.read_csv('vulnerabilities.csv')
+
+# Preprocess the data using NumPy
+# In this example, we assume that the dataset has two columns: 'features' and 'vulnerability'
+# 'features' is a numpy array of shape (n_samples, n_features)
+# 'vulnerability' is a numpy array of shape (n_samples,) with values 0 or 1, where 1 indicates a vulnerability
+X = np.array(data['features'].tolist())
+y = np.array(data['vulnerability'])
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Preprocess the data using scikit-learn
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train a logistic regression model using scikit-learn
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+# Evaluate the model on the testing set
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+confusion = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print(f'Accuracy: {accuracy:.2f}')
+print(f'Confusion matrix:\n{confusion}')
+print(f'Classification report:\n{report}')
+
+
