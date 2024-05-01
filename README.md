@@ -22,4 +22,6 @@ Analyze the sentiment of security hunters' feedback and comments to identify are
 <h3>Predictive Maintenance</h3>
 Develop a system that predicts when a security tool or resource is likely to become outdated or obsolete, allowing the BBAP to proactively update its offerings. NumPy be used to perform time series analysis and feature engineering, while a library like scikit-learn or TensorFlow can be used to train a predictive model.
 
+
+
 <img width="307" alt="BB assist" src="https://github.com/ties2/My-sec-notes/assets/17667404/fa8d194c-4626-4930-b3f8-1dceca03882d">
