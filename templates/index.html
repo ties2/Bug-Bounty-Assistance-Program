@@ -1,0 +1,20 @@
+<html>
+<body>
+    <form method="post">
+        <input type="text" name="number" />
+        <input type="submit" value="Add number" />
+    </form>
+    <form method="post">
+        <input type="submit" name="action" value="Calculate mode" />
+    </form>
+    {{ errors }}
+    <h2>Numbers so far:</h2>
+    <ul>
+        {% for number in inputs %}
+            <li>{{ number }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Result:</h2>
+    <p>{{ result }}</p>
+</body>
+</html>

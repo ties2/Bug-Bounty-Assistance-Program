@@ -1,0 +1,70 @@
+def test_role_definitions():
+    print("Testing role definitions...")
+    # Identify roles and their permissions
+    # Check for unnecessary or excessive permissions
+    print("Identifying roles and their permissions...")
+    print("Checking for unnecessary or excessive permissions...")
+
+def test_user_registration_process():
+    print("Testing user registration process...")
+    # Test the user registration process
+    # Check for weak password policies
+    # Verify that user registration is properly logged
+    print("Testing the user registration process...")
+    print("Checking for weak password policies...")
+    print("Verifying that user registration is properly logged...")
+
+def test_account_provisioning_process():
+    print("Testing account provisioning process...")
+    # Test the account provisioning process
+    # Check for proper access controls
+    # Verify that account provisioning is properly logged
+    print("Testing the account provisioning process...")
+    print("Checking for proper access controls...")
+    print("Verifying that account provisioning is properly logged...")
+
+def test_account_enumeration_and_guessable_user_account():
+    print("Testing for account enumeration and guessable user account...")
+    # Test for account enumeration
+    # Check for guessable user accounts
+    print("Testing for account enumeration...")
+    print("Checking for guessable user accounts...")
+
+def test_weak_or_unenforced_username_policy():
+    print("Testing for weak or unenforced username policy...")
+    # Test for weak or unenforced username policy
+    # Check for common username patterns
+    print("Testing for weak or unenforced username policy...")
+    print("Checking for common username patterns...")
+
+
+
+
+###############4.1 Information Gathering###############
+process_steps = {
+    '1': test_role_definitions,
+    '2': test_user_registration_process,
+    '3': test_account_provisioning_process,
+    '4': test_account_enumeration_and_guessable_user_account,
+    '5': test_weak_or_unenforced_username_policy
+}
+    
+while True:
+    print("\nMain Menu:")
+    print("1. Test Role Definitions")
+    print("2. Test User Registration Process")
+    print("3. Test Account Provisioning Process")
+    print("4. Testing for Account Enumeration and Guessable User Account")
+    print("5. Testing for Weak or Unenforced Username Policy")
+    print("E. Exit")
+
+    option = input("Enter an option: ").strip()
+
+    if option == 'E' or option == 'e':
+        break
+
+    if option in process_steps:
+        print(process_steps[option].__name__)
+        process_steps[option]()
+    else:
+        print("Invalid option. Please try again.")
