@@ -28,7 +28,6 @@ process_steps = {
       '5': ffuf,
       '6': nuclei,
 }
-   
 while True:
       print("\nRecon tools:")
       print("1. subfinder")
@@ -40,15 +39,14 @@ while True:
       print("E. Exit")
       
       main_choice = input("Choose an option: ")
-      
+
       if main_choice in process_steps:
-         process_steps[main_choice]()
+            process_steps[main_choice]()
       
       elif main_choice == 'E':
-         break
-
+            break
       else:
-         print("Invalid option, please try again.")
+            print("Invalid option, please try again.")
 
 
 
