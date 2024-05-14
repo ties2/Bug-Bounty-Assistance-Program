@@ -37,17 +37,17 @@ while True:
       print("5. Gowitness")
       print("6. ffuf")
       print("E. Exit")
-      
-      main_choice = input("Choose an option: ")
 
-      if main_choice in process_steps:
-            process_steps[main_choice]()
-      
-      elif main_choice == 'E':
+      option = input("Enter an option: ").strip()
+
+      if option == 'E' or option == 'e':
             break
-      else:
-            print("Invalid option, please try again.")
 
+      if option in process_steps:
+            print(process_steps[option].__name__)
+            process_steps[option]()
+      else:
+            print("Invalid option. Please try again.")
 
 
 

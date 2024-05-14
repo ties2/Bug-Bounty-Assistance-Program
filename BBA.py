@@ -5,18 +5,17 @@ import webbrowser
 from PIL import Image
 from termcolor import colored
 #from ascii_magic import AsciiArt
-from infoTools import ReconBB
-from infoTools import Information_Gathering
 from Learning_and_sites import open_websites
 from Tools import Tool
 from vulnerable import vulnerability
 from BBA_WSTGinfo import WSTG_info
+from BBA_Report import Report
 
 
 ##########image of start###############
 print("welcome to BB Assist")
-#my_art = AsciiArt.from_image('/Volumes/myjob/Computer/Programming/Projects/python/BB assist/BB assist copy.png')
-#clearmy_art.to_terminal()
+# my_art = AsciiArt.from_image('/Volumes/myjob/Computer/Programming/Projects/python/BB assist/BB assist copy.png')
+# clearmy_art.to_terminal()
     #################################################################
 def WSTG_info():
     print("Recon...")
@@ -34,6 +33,8 @@ def Exploit_Development():
 
 def Documentation_and_Reporting():
     print("Documentation_and_Reporting process started...")
+    #reporting
+    Report()
 
     #################################################################
 
@@ -63,7 +64,7 @@ def Tools():
     
     print("Tools_and_Automation process started...") 
     Tool()
- 
+
     #################################################################
 
 def Vulnerabilities():
@@ -84,7 +85,7 @@ def Web_app_Checklist():
 def main():
     print("test")
 # Create a dictionary of process steps
-    process_steps = {
+process_steps = {
         '1': WSTG_info,
         '2': Exploit_Development,
         '3': Documentation_and_Reporting,
@@ -98,7 +99,7 @@ def main():
         # Add the remaining process steps to this dictionary...
     }
 
-    while True:
+while True:
         print("\nMain Menu:")
         print("1. Recon")
         print("2. Exploit Development")
