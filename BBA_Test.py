@@ -1,33 +1,25 @@
 import requests
-import concurrent.futures
+from bs4 import BeautifulSoup, Comment
 import re
 
-import websocket,json
+url = "https://www.shatel.ir"
 
-ws = websocket.WebSocket()
-ws.connect("ws://www.heroku.com")
-d = {"message": "hello"}
-data = str(json.dumps(d))
-ws.send(data)
-result = ws.recv()
-print(json.loads(result))
-# d = {"message": "<script>alert(1)</script>"}
-################################
-import WebSocket from 'ws';
+def find_comments(url):
+    # Fetch the HTML content of the web application
+    response = requests.get(url)
+    html_content = response.text
 
-const accessToken = 'your_access_token_here';
-const ws = new WebSocket(`wss://api.github.com/?access_token=${accessToken}`);
+    # Find all single-line comments
+    single_line_comments = re.findall(r'<!--.*?-->', html_content, re.DOTALL)
+    print("Single-line comments:")
+    for comment in single_line_comments:
+        print(comment)
 
-ws.on('error', console.error);
+    # Find all multi-line comments
+    multi_line_comments = re.findall(r'/\*(.*?)\*/', html_content, re.DOTALL)
+    print("\nMulti-line comments:")
+    for comment in multi_line_comments:
+        print(comment)
 
-ws.on('open', function open() {
-  console.log('Connected to GitHub WebSocket API with authentication');
-});
 
-ws.on('message', function message(data) {
-  console.log('Received message from GitHub WebSocket API:', data);
-});
-
-ws.on('close', function close() {
-  console.log('Disconnected from GitHub WebSocket API with authentication');
-});
+find_comments(url)
